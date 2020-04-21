@@ -160,6 +160,12 @@ function populate_zoom_from_response(stdClass $zoom, stdClass $response) {
     if (isset($response->settings->join_before_host)) {
         $newzoom->option_jbh = $response->settings->join_before_host;
     }
+    if (isset($response->settings->meeting_authentication)) {
+        $newzoom->option_meeting_authentication = $response->settings->meeting_authentication;
+    }
+    if (isset($response->settings->waiting_room)) {
+        $newzoom->option_waiting_room = $response->settings->waiting_room;
+    }
     if (isset($response->settings->participant_video)) {
         $newzoom->option_participants_video = $response->settings->participant_video;
     }

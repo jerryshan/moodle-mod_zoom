@@ -307,6 +307,26 @@ function xmldb_zoom_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2019061800, 'zoom');
     }
 
+    if ($oldversion < 2019061801) {
+        // Define field alternative_hosts to be added to zoom.
+        $table = new xmldb_table('zoom');
+
+        $field = new xmldb_field('option_meeting_authentication', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'option_audio');
+
+        // Conditionally launch add field alternative_hosts.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('option_waiting_room', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'option_meeting_authentication');
+        // Conditionally launch add field alternative_hosts.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        // Zoom savepoint reached.
+        upgrade_mod_savepoint(true, 2019061801, 'zoom');
+    }
+    
     if ($oldversion < 2019091200) {
         // Change field alternative_hosts from type char(255) to text.
         $table = new xmldb_table('zoom');

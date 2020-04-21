@@ -161,6 +161,26 @@ class mod_zoom_mod_form extends moodleform_mod {
         $mform->addHelpButton('meetingoptions', 'meetingoptions', 'zoom');
         $mform->disabledIf('meetingoptions', 'webinar', 'checked');
 
+        // Add meeting authentication options. Make sure we pass $appendName as false
+        // so the options aren't nested in a 'meetingoptions' array.
+        $mform->addGroup(array(
+            // Meeting authentication
+            $mform->createElement('advcheckbox', 'option_meeting_authentication', '', get_string('option_meeting_authentication', 'zoom'))
+        ), 'meetingauthentication', get_string('meetingauthentication', 'zoom'), null, false);
+        $mform->setDefault('option_meeting_authentication', $config->defaultmeetingauthentication);
+        $mform->addHelpButton('meetingauthentication', 'meetingauthentication', 'zoom');
+        $mform->disabledIf('meetingauthentication', 'webinar', 'checked');
+
+        // Add waiting room options. Make sure we pass $appendName as false
+        // so the options aren't nested in a 'meetingoptions' array.
+        $mform->addGroup(array(
+            // Waiting room
+            $mform->createElement('advcheckbox', 'option_waiting_room', '', get_string('option_waiting_room', 'zoom'))
+        ), 'waitingroom', get_string('waitingroom', 'zoom'), null, false);
+        $mform->setDefault('option_waiting_room', $config->defaultwaitingroom);
+        $mform->addHelpButton('waitingroom', 'waitingroom', 'zoom');
+        $mform->disabledIf('waitingroom', 'webinar', 'checked');
+
         // Add alternative hosts.
         $mform->addElement('text', 'alternative_hosts', get_string('alternative_hosts', 'zoom'), array('size' => '64'));
         $mform->setType('alternative_hosts', PARAM_TEXT);

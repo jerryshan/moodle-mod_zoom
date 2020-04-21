@@ -109,4 +109,12 @@ if ($ADMIN->fulltree) {
     $proxyhost = new admin_setting_configtext('mod_zoom/proxyhost', get_string('option_proxyhost', 'zoom'),
             get_string('option_proxyhost_desc', 'mod_zoom'), '', '/^[a-zA-Z0-9.-]+:[0-9]+$|^$/');
     $settings->add($proxyhost);
+    
+    $defaultmeetingauthentication = new admin_setting_configcheckbox('mod_zoom/defaultmeetingauthentication', get_string('option_meeting_authentication', 'zoom'),
+    '', 0, 1, 0);
+    $settings->add($defaultmeetingauthentication);
+
+    $defaultwaitingroom = new admin_setting_configcheckbox('mod_zoom/defaultwaitingroom', get_string('option_waiting_room', 'zoom'),
+    '', 0, 1, 0);
+    $settings->add($defaultwaitingroom);
 }

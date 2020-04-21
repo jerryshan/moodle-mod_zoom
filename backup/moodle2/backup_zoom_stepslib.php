@@ -48,8 +48,8 @@ class backup_zoom_activity_structure_step extends backup_activity_structure_step
             'intro', 'introformat', 'grade',
             'uuid', 'meeting_id', 'start_url', 'join_url',
             'created_at', 'host_id', 'name', 'start_time', 'timemodified',
-            'recurring', 'webinar', 'duration', 'timezone', 'password', 'option_jbh',
-            'option_start_type', 'option_host_video', 'option_participants_video',
+            'recurring', 'webinar', 'duration', 'timezone', 'password', 'option_jbh','option_meeting_authentication',
+            'option_waiting_room','option_start_type', 'option_host_video', 'option_participants_video',
             'option_audio', 'status'));
 
         // If we had more elements, we would build the tree here.

@@ -79,6 +79,8 @@ $strpassprotect = get_string('passwordprotected', 'mod_zoom');
 $strpassword = get_string('password', 'mod_zoom');
 $strjoinlink = get_string('join_link', 'mod_zoom');
 $strjoinbeforehost = get_string('joinbeforehost', 'mod_zoom');
+$strmeetingauthentication_title = get_string('meetingauthentication', 'mod_zoom');
+$strwaitingroom_title = get_string('waitingroom', 'mod_zoom');
 $strstartvideohost = get_string('starthostjoins', 'mod_zoom');
 $strstartvideopart = get_string('startpartjoins', 'mod_zoom');
 $straudioopt = get_string('option_audio', 'mod_zoom');
@@ -180,6 +182,12 @@ if ($userishost) {
 if (!$zoom->webinar) {
     $strjbh = ($zoom->option_jbh) ? $stryes : $strno;
     $table->data[] = array($strjoinbeforehost, $strjbh);
+
+    $strmeetingauthentication = ($zoom->option_meeting_authentication) ? $stryes : $strno;
+    $table->data[] = array($strmeetingauthentication_title, $strmeetingauthentication);
+
+    $strwaitingroom = ($zoom->option_waiting_room) ? $stryes : $strno;
+    $table->data[] = array($strwaitingroom_title, $strwaitingroom);
 
     $strvideohost = ($zoom->option_host_video) ? $stryes : $strno;
     $table->data[] = array($strstartvideohost, $strvideohost);

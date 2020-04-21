@@ -100,6 +100,8 @@ class mod_zoom_external extends external_api {
         }
         $result['haspassword'] = (isset($zoom->password) && $zoom->password !== '');
         $result['joinbeforehost'] = $zoom->option_jbh;
+        $result['meetingauthentication'] = $zoom->option_meeting_authentication;
+        $result['waitingroom'] = $zoom->option_waiting_room;
         $result['startvideohost'] = $zoom->option_host_video;
         $result['startvideopart'] = $zoom->option_participants_video;
         $result['audioopt'] = $zoom->option_audio;

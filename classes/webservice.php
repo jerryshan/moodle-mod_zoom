@@ -389,6 +389,8 @@ class mod_zoom_webservice {
         } else {
             $data['type'] = $zoom->recurring ? ZOOM_RECURRING_MEETING : ZOOM_SCHEDULED_MEETING;
             $data['settings']['join_before_host'] = (bool) ($zoom->option_jbh);
+            $data['settings']['meeting_authentication'] = (bool) ($zoom->option_meeting_authentication);
+            $data['settings']['waiting_room'] = (bool) ($zoom->option_waiting_room);
             $data['settings']['participant_video'] = (bool) ($zoom->option_participants_video);
         }
 
