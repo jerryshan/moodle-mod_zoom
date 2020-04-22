@@ -239,7 +239,7 @@ class mod_zoom_mod_form extends moodleform_mod {
             $mform->createElement('radio', 'option_auto_recording', '', get_string('auto_recording_local', 'zoom'), ZOOM_AUTO_RECORDING_LOCAL),
             $mform->createElement('radio', 'option_auto_recording', '', get_string('auto_recording_cloud', 'zoom'), ZOOM_AUTO_RECORDING_CLOUD)
         ), null, get_string('option_auto_recording', 'zoom'));
-        $mform->setDefault('autorecording', $config->defaultautorecording);
+        $mform->setDefault('option_auto_recording', $config->defaultautorecording);
         $mform->addHelpButton('option_auto_recording', 'option_auto_recording', 'zoom');
 
         // Add alternative hosts.
