@@ -307,26 +307,51 @@ function xmldb_zoom_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2019061800, 'zoom');
     }
 
+    
     if ($oldversion < 2019061801) {
         // Define field alternative_hosts to be added to zoom.
         $table = new xmldb_table('zoom');
-
+        
         $field = new xmldb_field('option_meeting_authentication', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'option_audio');
-
-        // Conditionally launch add field alternative_hosts.
+        // Conditionally launch add field option_meeting_authentication.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
         $field = new xmldb_field('option_waiting_room', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'option_meeting_authentication');
-        // Conditionally launch add field alternative_hosts.
+        // Conditionally launch add field option_waiting_room.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
+
+        $field = new xmldb_field('option_authentication_option', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'option_waiting_room');
+        // Conditionally launch add field option_authentication_option.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('authentication_domains', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'option_authentication_option');
+        // Conditionally launch add field authentication_domains.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('option_mute_upon_entry', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'authentication_domains');        
+        // Conditionally launch add field option_mute_upon_entry.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('option_auto_recording', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, 'none', 'option_mute_upon_entry');        
+        // Conditionally launch add field option_auto_recording.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
         // Zoom savepoint reached.
         upgrade_mod_savepoint(true, 2019061801, 'zoom');
     }
-    
+
     if ($oldversion < 2019091200) {
         // Change field alternative_hosts from type char(255) to text.
         $table = new xmldb_table('zoom');
@@ -336,6 +361,7 @@ function xmldb_zoom_upgrade($oldversion) {
         // Zoom savepoint reached.
         upgrade_mod_savepoint(true, 2019091200, 'zoom');
     }
+
 
     return true;
 }

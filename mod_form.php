@@ -48,6 +48,8 @@ class mod_zoom_mod_form extends moodleform_mod {
         $config = get_config('mod_zoom');
         $service = new mod_zoom_webservice();
         $zoomuser = $service->get_user($USER->email);
+
+
         if ($zoomuser === false) {
             // Assume user is using Zoom for the first time.
             $errstring = 'zoomerr_usernotfound';
@@ -73,7 +75,7 @@ class mod_zoom_mod_form extends moodleform_mod {
                 }
             }
         }
-
+   
         // Start of form definition.
         $mform = $this->_form;
 
@@ -151,6 +153,7 @@ class mod_zoom_mod_form extends moodleform_mod {
         ), null, get_string('option_audio', 'zoom'));
         $mform->setDefault('option_audio', $config->defaultaudiooption);
 
+        
         // Add meeting options. Make sure we pass $appendName as false
         // so the options aren't nested in a 'meetingoptions' array.
         $mform->addGroup(array(
@@ -161,25 +164,83 @@ class mod_zoom_mod_form extends moodleform_mod {
         $mform->addHelpButton('meetingoptions', 'meetingoptions', 'zoom');
         $mform->disabledIf('meetingoptions', 'webinar', 'checked');
 
-        // Add meeting authentication options. Make sure we pass $appendName as false
+
+        // Add waiting room options. Make sure we pass $appendName as false
         // so the options aren't nested in a 'meetingoptions' array.
         $mform->addGroup(array(
-            // Meeting authentication
-            $mform->createElement('advcheckbox', 'option_meeting_authentication', '', get_string('option_meeting_authentication', 'zoom'))
-        ), 'meetingauthentication', get_string('meetingauthentication', 'zoom'), null, false);
-        $mform->setDefault('option_meeting_authentication', $config->defaultmeetingauthentication);
-        $mform->addHelpButton('meetingauthentication', 'meetingauthentication', 'zoom');
-        $mform->disabledIf('meetingauthentication', 'webinar', 'checked');
+            // Waiting room
+            $mform->createElement('advcheckbox', 'option_mute_upon_entry', '', get_string('option_mute_upon_entry', 'zoom'))
+        ), 'muteuponentry',null, null, false);
+        $mform->setDefault('option_mute_upon_entry', $config->defaultmuteuponentry);
+        $mform->addHelpButton('muteuponentry', 'muteuponentry', 'zoom');
+        $mform->disabledIf('muteuponentry', 'webinar', 'checked');
+
 
         // Add waiting room options. Make sure we pass $appendName as false
         // so the options aren't nested in a 'meetingoptions' array.
         $mform->addGroup(array(
             // Waiting room
             $mform->createElement('advcheckbox', 'option_waiting_room', '', get_string('option_waiting_room', 'zoom'))
-        ), 'waitingroom', get_string('waitingroom', 'zoom'), null, false);
+        ), 'waitingroom', null, null, false);
         $mform->setDefault('option_waiting_room', $config->defaultwaitingroom);
         $mform->addHelpButton('waitingroom', 'waitingroom', 'zoom');
         $mform->disabledIf('waitingroom', 'webinar', 'checked');
+        
+        // Add meeting authentication options. Make sure we pass $appendName as false
+        // so the options aren't nested in a 'meetingoptions' array.
+        $mform->addGroup(array(
+            // Meeting authentication
+            $mform->createElement('advcheckbox', 'option_meeting_authentication', '', get_string('option_meeting_authentication', 'zoom'))
+        ), 'meetingauthentication',null, null, false);
+        $mform->setDefault('option_meeting_authentication', $config->defaultmeetingauthentication);
+        $mform->addHelpButton('meetingauthentication', 'meetingauthentication', 'zoom');
+        $mform->disabledIf('meetingauthentication', 'webinar', 'checked');
+
+        // Add meeting authentication options.
+        $auth_options = $service->_get_user_meeting_authentication_option($zoomuser->id)->authentication_options;
+        $defaultdomains = "<br>";
+        foreach ($auth_options as $auth_option) {
+            $options[$auth_option->id] = $auth_option->name;
+
+            if ( $auth_option->default_option == true ) {
+                $defaultauthoption = $auth_option->id;
+            }
+
+            $defaultdomains .= "<b>".$auth_option->name . "</b>: ". $auth_option->domains . "<br>";
+        }
+        $option_authentication_option = $mform->addElement('select', 'option_authentication_option', null, $options);
+        $mform->setType('option_authentication_option', PARAM_ALPHANUMEXT);
+        $option_authentication_option->setSelected($defaultauthoption);
+        $mform->addHelpButton('option_authentication_option', 'option_authentication_option', 'zoom');
+        $mform->hideIf('option_authentication_option', 'option_meeting_authentication', 'unchecked');
+
+        // Add checkbox to enable edit authentication domains.
+        if ( $this->current->authentication_domains == null ) {
+            $editauthdomains_checked = false;
+        } else {
+            $editauthdomains_checked = true;
+        }
+        $mform->addElement('advcheckbox', 'editauthdomains', get_string('edit_authentication_domains', 'zoom') . $defaultdomains);
+        $mform->setDefault('editauthdomains', $editauthdomains_checked);
+        $mform->hideIf('editauthdomains', 'option_meeting_authentication', 'unchecked');
+        $mform->addHelpButton('editauthdomains', 'edit_authentication_domains', 'zoom');
+
+        // Add authentication domains
+        $mform->addElement('text', 'authentication_domains', get_string('authentication_domains', 'zoom'), array('size' => '64'));
+        $mform->setType('authentication_domains', PARAM_TEXT);
+        // Set the maximum field length to 255 because that's the limit on Zoom's end.
+        $mform->addRule('authentication_domains', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+        $mform->addHelpButton('authentication_domains', 'authentication_domains', 'zoom');
+        $mform->hideIf('authentication_domains', 'editauthdomains', 'unchecked');
+
+       // Add auto recording options.
+        $mform->addGroup(array(
+            $mform->createElement('radio', 'option_auto_recording', '', get_string('auto_recording_none', 'zoom'), ZOOM_AUTO_RECORDING_NONE),
+            $mform->createElement('radio', 'option_auto_recording', '', get_string('auto_recording_local', 'zoom'), ZOOM_AUTO_RECORDING_LOCAL),
+            $mform->createElement('radio', 'option_auto_recording', '', get_string('auto_recording_cloud', 'zoom'), ZOOM_AUTO_RECORDING_CLOUD)
+        ), null, get_string('option_auto_recording', 'zoom'));
+        $mform->setDefault('autorecording', $config->defaultautorecording);
+        $mform->addHelpButton('option_auto_recording', 'option_auto_recording', 'zoom');
 
         // Add alternative hosts.
         $mform->addElement('text', 'alternative_hosts', get_string('alternative_hosts', 'zoom'), array('size' => '64'));

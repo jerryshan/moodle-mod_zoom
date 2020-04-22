@@ -102,6 +102,7 @@ if ($ADMIN->fulltree) {
             '', ZOOM_AUDIO_BOTH, $audiochoices);
     $settings->add($defaultaudiooption);
 
+
     $defaultjoinbeforehost = new admin_setting_configcheckbox('mod_zoom/defaultjoinbeforehost', get_string('option_jbh', 'zoom'),
             '', 0, 1, 0);
     $settings->add($defaultjoinbeforehost);
@@ -110,11 +111,23 @@ if ($ADMIN->fulltree) {
             get_string('option_proxyhost_desc', 'mod_zoom'), '', '/^[a-zA-Z0-9.-]+:[0-9]+$|^$/');
     $settings->add($proxyhost);
     
-    $defaultmeetingauthentication = new admin_setting_configcheckbox('mod_zoom/defaultmeetingauthentication', get_string('option_meeting_authentication', 'zoom'),
+    $defaultmuteuponentry = new admin_setting_configcheckbox('mod_zoom/defaultmuteuponentry', get_string('option_mute_upon_entry', 'zoom'),
     '', 0, 1, 0);
-    $settings->add($defaultmeetingauthentication);
+    $settings->add($defaultmuteuponentry);
+
 
     $defaultwaitingroom = new admin_setting_configcheckbox('mod_zoom/defaultwaitingroom', get_string('option_waiting_room', 'zoom'),
     '', 0, 1, 0);
     $settings->add($defaultwaitingroom);
+
+    $defaultmeetingauthentication = new admin_setting_configcheckbox('mod_zoom/defaultmeetingauthentication', get_string('option_meeting_authentication', 'zoom'),
+    '', 0, 1, 0);
+    $settings->add($defaultmeetingauthentication);
+
+    $autorecordingchoices = array(ZOOM_AUTO_RECORDING_LOCAL => get_string('auto_recording_local', 'zoom'),
+                                ZOOM_AUTO_RECORDING_CLOUD => get_string('auto_recording_cloud', 'zoom'),
+                                ZOOM_AUTO_RECORDING_NONE => get_string('auto_recording_none', 'zoom'));
+    $defaultautorecording = new admin_setting_configselect('mod_zoom/defaultautorecording', get_string('option_auto_recording', 'zoom'),
+        '', ZOOM_AUTO_RECORDING_NONE, $autorecordingchoices);
+    $settings->add($defaultautorecording);
 }

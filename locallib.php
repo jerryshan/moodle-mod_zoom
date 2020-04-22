@@ -50,6 +50,10 @@ define('ZOOM_USER_TYPE_BASIC', 1);
 define('ZOOM_USER_TYPE_PRO', 2);
 define('ZOOM_USER_TYPE_CORP', 3);
 
+define('ZOOM_AUTO_RECORDING_LOCAL', 'local');
+define('ZOOM_AUTO_RECORDING_CLOUD', 'cloud');
+define('ZOOM_AUTO_RECORDING_NONE', 'none');
+
 /**
  * Entry not found on Zoom.
  */

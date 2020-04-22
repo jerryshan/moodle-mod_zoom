@@ -51,6 +51,8 @@ class mobile {
 
         //get audio option string
         $option_audio = get_string('audio_' . $zoom->option_audio, 'mod_zoom');
+        $option_auto_recording = get_string('auto_' . $zoom->option_auto_recording, 'mod_zoom');
+
 
         $data = array(
             'zoom' => $zoom,
@@ -59,6 +61,7 @@ class mobile {
             'start_time' => $start_time,
             'duration' => $duration,
             'option_audio' => $option_audio,
+            'option_auto_recording' => $option_auto_recording,
             //'userishost' => $userishost,
             'cmid' => $cm->id,
             'courseid' => $args->courseid
@@ -79,3 +82,4 @@ class mobile {
     }
 
 }
+

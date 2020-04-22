@@ -322,6 +322,17 @@ class mod_zoom_webservice {
     public function _get_user_settings($userid) {
         return $this->_make_call('users/' . $userid . '/settings');
     }
+    
+    /**
+     * Gets authentication options.
+     *
+     * @param string $userid The user's ID.
+     * @return stdClass The call's result in JSON format.
+     * @link https://zoom.github.io/api/#retrieve-a-users-settings
+     */
+    public function _get_user_meeting_authentication_option($userid) {
+        return $this->_make_call('users/' . $userid . '/settings?option=meeting_authentication');
+    }
 
     /**
      * Gets a user.
@@ -366,7 +377,8 @@ class mod_zoom_webservice {
             'topic' => $zoom->name,
             'settings' => array(
                 'host_video' => (bool) ($zoom->option_host_video),
-                'audio' => $zoom->option_audio
+                'audio' => $zoom->option_audio,
+                'auto_recording' => $zoom->option_auto_recording
             )
         );
         if (isset($zoom->intro)) {
@@ -388,8 +400,22 @@ class mod_zoom_webservice {
             $data['type'] = $zoom->recurring ? ZOOM_RECURRING_WEBINAR : ZOOM_SCHEDULED_WEBINAR;
         } else {
             $data['type'] = $zoom->recurring ? ZOOM_RECURRING_MEETING : ZOOM_SCHEDULED_MEETING;
-            $data['settings']['join_before_host'] = (bool) ($zoom->option_jbh);
-            $data['settings']['meeting_authentication'] = (bool) ($zoom->option_meeting_authentication);
+            $data['settings']['join_before_host'] = (bool) ($zoom->option_jbh);            
+
+            if ($zoom->option_meeting_authentication == true ){
+                $data['settings']['meeting_authentication'] = (bool) ($zoom->option_meeting_authentication);
+                $data['settings']['authentication_option'] = $zoom->option_authentication_option;
+                
+                if($zoom->editauthdomains == true){
+                    $data['settings']['authentication_domains']= $zoom->authentication_domains;
+                } else {
+                    $data['settings']['authentication_domains']= "";
+                }
+            } else {
+                $data['settings']['meeting_authentication'] = false;
+            }
+
+            $data['settings']['mute_upon_entry'] = (bool) ($zoom->option_mute_upon_entry);
             $data['settings']['waiting_room'] = (bool) ($zoom->option_waiting_room);
             $data['settings']['participant_video'] = (bool) ($zoom->option_participants_video);
         }
@@ -521,6 +547,7 @@ class mod_zoom_webservice {
         $uuid = $this->encode_uuid($uuid);
         return $this->_make_call('webinars/' . $uuid);
     }
+    
 
     /**
      * Get the participants who attended a meeting

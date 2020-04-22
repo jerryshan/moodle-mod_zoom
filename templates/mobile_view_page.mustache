@@ -42,21 +42,6 @@
 	  
 		<%^zoom.webinar%>
 			<ion-item>
-				<p class="item-heading">{{ 'plugin.mod_zoom.joinbeforehost' | translate }}</p>
-				<%#zoom.option_jbh%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_jbh%>
-				<%^zoom.option_jbh%><p>{{ 'core.no' | translate }}</p><%/zoom.option_jbh%>
-			</ion-item>
-			<ion-item>
-				<p class="item-heading">{{ 'plugin.mod_zoom.meetingauthentication' | translate }}</p>
-				<%#zoom.option_meetingauthentication%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_meetingauthentication%>
-				<%^zoom.option_meetingauthentication%><p>{{ 'core.no' | translate }}</p><%/zoom.option_meetingauthentication%>
-			</ion-item>
-			<ion-item>
-				<p class="item-heading">{{ 'plugin.mod_zoom.waitingroom' | translate }}</p>
-				<%#zoom.option_waitingroom%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_waitingroom%>
-				<%^zoom.option_waitingroom%><p>{{ 'core.no' | translate }}</p><%/zoom.option_waitingroom%>
-			</ion-item>
-			<ion-item>
 				<p class="item-heading">{{ 'plugin.mod_zoom.starthostjoins' | translate }}</p>
 				<%#zoom.option_host_video%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_host_video%>
 				<%^zoom.option_host_video%><p>{{ 'core.no' | translate }}</p><%/zoom.option_host_video%>
@@ -66,11 +51,35 @@
 				<%#zoom.option_participants_video%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_participants_video%>
 				<%^zoom.option_participants_video%><p>{{ 'core.no' | translate }}</p><%/zoom.option_participants_video%>
 			</ion-item>
+			<ion-item>
+				<p class="item-heading">{{ 'plugin.mod_zoom.joinbeforehost' | translate }}</p>
+				<%#zoom.option_jbh%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_jbh%>
+				<%^zoom.option_jbh%><p>{{ 'core.no' | translate }}</p><%/zoom.option_jbh%>
+			</ion-item>
+			<ion-item>
+				<p class="item-heading">{{ 'plugin.mod_zoom.muteuponentry' | translate }}</p>
+				<%#zoom.option_mute_upon_entry%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_mute_upon_entry%>
+				<%^zoom.option_mute_upon_entry%><p>{{ 'core.no' | translate }}</p><%/zoom.option_mute_upon_entry%>
+			</ion-item>
+			<ion-item>
+				<p class="item-heading">{{ 'plugin.mod_zoom.waitingroom' | translate }}</p>
+				<%#zoom.option_waiting_room%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_waiting_room%>
+				<%^zoom.option_waiting_room%><p>{{ 'core.no' | translate }}</p><%/zoom.option_waiting_room%>
+			</ion-item>
+			<ion-item>
+				<p class="item-heading">{{ 'plugin.mod_zoom.meetingauthentication' | translate }}</p>
+				<%#zoom.option_meeting_authentication%><p>{{ 'core.yes' | translate }}</p><%/zoom.option_meeting_authentication%>
+				<%^zoom.option_meeting_authentication%><p>{{ 'core.no' | translate }}</p><%/zoom.option_meeting_authentication%>
+			</ion-item>
 		<%/zoom.webinar%>
 		
 		<ion-item>
 			<p class="item-heading">{{ 'plugin.mod_zoom.option_audio' | translate }}</p>
 			<p><% option_audio %></p>
+		</ion-item>
+		<ion-item>
+			<p class="item-heading">{{ 'plugin.mod_zoom.option_auto_recording' | translate }}</p>
+			<p><% option_auto_recording %></p>
 		</ion-item>
 		
 		<%^zoom.recurring%>

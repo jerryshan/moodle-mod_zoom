@@ -52,6 +52,7 @@ $addons = array(
 			array('starthostjoins', 'zoom'),
 			array('startpartjoins', 'zoom'),
 			array('option_audio', 'zoom'),
+			array('option_auto_recording', 'zoom'),
 			array('status', 'zoom'),
 			array('recurringmeetinglong', 'zoom')
 		)

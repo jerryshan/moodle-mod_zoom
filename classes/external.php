@@ -100,11 +100,23 @@ class mod_zoom_external extends external_api {
         }
         $result['haspassword'] = (isset($zoom->password) && $zoom->password !== '');
         $result['joinbeforehost'] = $zoom->option_jbh;
-        $result['meetingauthentication'] = $zoom->option_meeting_authentication;
+        $result['muteuponentry'] = $zoom->option_mute_upon_entry;
         $result['waitingroom'] = $zoom->option_waiting_room;
+
+        if ($zoom->option_meeting_authentication == true ){
+            $result['meetingauthentication'] = $zoom->option_meeting_authentication;
+            $result['authenticationoption'] = $zoom->option_authentication_option;
+
+            if($zoom->editauthdomains == false){
+                $result['authenticationdomains'] = $zoom->authentication_domains;
+            }else{
+                $result['authenticationdomains'] = "";
+            }
+        }
         $result['startvideohost'] = $zoom->option_host_video;
         $result['startvideopart'] = $zoom->option_participants_video;
         $result['audioopt'] = $zoom->option_audio;
+        $result['audorecording'] = $zoom->option_auto_recording;
 
         if (!$zoom->recurring) {
             if (!$zoom->exists_on_zoom) {

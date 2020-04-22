@@ -53,6 +53,11 @@ $PAGE->set_title(format_string($zoom->name));
 $PAGE->set_heading(format_string($course->fullname));
 
 $zoomuserid = zoom_get_user_id(false);
+
+
+//NaaeIMaOTT2lL5XV6zUptw
+
+
 $alternativehosts = array();
 if (!is_null($zoom->alternative_hosts)) {
     $alternativehosts = explode(",", $zoom->alternative_hosts);
@@ -64,6 +69,14 @@ $service = new mod_zoom_webservice();
 try {
     $service->get_meeting_webinar_info($zoom->meeting_id, $zoom->webinar);
     $showrecreate = false;
+
+    $auth_options = $service->_get_user_meeting_authentication_option($zoom->host_id)->authentication_options;
+    foreach ($auth_options as $auth_option) {
+        if ( $auth_option->id == $zoom->option_authentication_option ) {
+            $authoptionname = $auth_option->name;
+            $authdomains = $auth_option->domains;
+        }
+    }
 } catch (moodle_exception $error) {
     $showrecreate = zoom_is_meeting_gone_error($error);
 }
@@ -80,10 +93,14 @@ $strpassword = get_string('password', 'mod_zoom');
 $strjoinlink = get_string('join_link', 'mod_zoom');
 $strjoinbeforehost = get_string('joinbeforehost', 'mod_zoom');
 $strmeetingauthentication_title = get_string('meetingauthentication', 'mod_zoom');
+$strauthenticationoption_title = get_string('option_authentication_option', 'mod_zoom');
+$strauthdomains_title = get_string('authentication_domains', 'mod_zoom');
+$strmuteuponentry_title = get_string('muteuponentry', 'mod_zoom');
 $strwaitingroom_title = get_string('waitingroom', 'mod_zoom');
 $strstartvideohost = get_string('starthostjoins', 'mod_zoom');
 $strstartvideopart = get_string('startpartjoins', 'mod_zoom');
 $straudioopt = get_string('option_audio', 'mod_zoom');
+$strautorecording = get_string('option_auto_recording', 'mod_zoom');
 $strstatus = get_string('status', 'mod_zoom');
 $strall = get_string('allmeetings', 'mod_zoom');
 
@@ -180,15 +197,6 @@ if ($userishost) {
 }
 
 if (!$zoom->webinar) {
-    $strjbh = ($zoom->option_jbh) ? $stryes : $strno;
-    $table->data[] = array($strjoinbeforehost, $strjbh);
-
-    $strmeetingauthentication = ($zoom->option_meeting_authentication) ? $stryes : $strno;
-    $table->data[] = array($strmeetingauthentication_title, $strmeetingauthentication);
-
-    $strwaitingroom = ($zoom->option_waiting_room) ? $stryes : $strno;
-    $table->data[] = array($strwaitingroom_title, $strwaitingroom);
-
     $strvideohost = ($zoom->option_host_video) ? $stryes : $strno;
     $table->data[] = array($strstartvideohost, $strvideohost);
 
@@ -197,6 +205,31 @@ if (!$zoom->webinar) {
 }
 
 $table->data[] = array($straudioopt, get_string('audio_' . $zoom->option_audio, 'mod_zoom'));
+
+if (!$zoom->webinar) {
+    $strjbh = ($zoom->option_jbh) ? $stryes : $strno;
+    $table->data[] = array($strjoinbeforehost, $strjbh);
+
+    $strmuteuponentry = ($zoom->option_mute_upon_entry) ? $stryes : $strno;
+    $table->data[] = array($strmuteuponentry_title, $strmuteuponentry);
+
+    $strwaitingroom = ($zoom->option_waiting_room) ? $stryes : $strno;
+    $table->data[] = array($strwaitingroom_title, $strwaitingroom);
+
+    $strmeetingauthentication = ($zoom->option_meeting_authentication) ? $stryes : $strno;
+    $table->data[] = array($strmeetingauthentication_title, $strmeetingauthentication);
+
+    if ($zoom->option_meeting_authentication == 1) {
+        $table->data[] = array($strauthenticationoption_title, $authoptionname);
+        if($zoom->authentication_domains == '') {
+            $table->data[] = array($strauthdomains_title, $authdomains);
+        } else {
+            $table->data[] = array($strauthdomains_title, $zoom->authentication_domains);
+        }
+    }
+}
+
+$table->data[] = array($strautorecording, get_string('auto_recording_' . $zoom->option_auto_recording, 'mod_zoom'));
 
 if (!$zoom->recurring) {
     if (!$zoom->exists_on_zoom) {

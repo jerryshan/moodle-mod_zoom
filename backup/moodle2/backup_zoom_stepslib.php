@@ -50,7 +50,7 @@ class backup_zoom_activity_structure_step extends backup_activity_structure_step
             'created_at', 'host_id', 'name', 'start_time', 'timemodified',
             'recurring', 'webinar', 'duration', 'timezone', 'password', 'option_jbh','option_meeting_authentication',
             'option_waiting_room','option_start_type', 'option_host_video', 'option_participants_video',
-            'option_audio', 'status'));
+            'option_authentication_option','authentication_domains','option_mute_upon_entry','option_auto_recording','option_audio', 'status'));
 
         // If we had more elements, we would build the tree here.
 
