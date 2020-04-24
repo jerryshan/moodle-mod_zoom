@@ -80,6 +80,10 @@ function zoom_add_instance(stdClass $zoom, mod_zoom_mod_form $mform = null) {
         $zoom->authentication_domains = null;
     }
 
+	if ($zoom->editauthdomains == false){
+        $zoom->authentication_domains = null;
+    }
+	
     $zoom->id = $DB->insert_record('zoom', $zoom);
 
     zoom_calendar_item_update($zoom);
