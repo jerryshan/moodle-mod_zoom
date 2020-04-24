@@ -202,15 +202,11 @@ class mod_zoom_mod_form extends moodleform_mod {
         foreach ($auth_options as $auth_option) {
             $options[$auth_option->id] = $auth_option->name;
 
-            if ( $auth_option->default_option == true ) {
-                $defaultauthoption = $auth_option->id;
-            }
-
             $defaultdomains .= "<b>".$auth_option->name . "</b>: ". $auth_option->domains . "<br>";
         }
         $option_authentication_option = $mform->addElement('select', 'option_authentication_option', null, $options);
         $mform->setType('option_authentication_option', PARAM_ALPHANUMEXT);
-        $option_authentication_option->setSelected($defaultauthoption);
+        $option_authentication_option->setSelected($config->defaultauthenticationoption);
         $mform->addHelpButton('option_authentication_option', 'option_authentication_option', 'zoom');
         $mform->hideIf('option_authentication_option', 'option_meeting_authentication', 'unchecked');
 

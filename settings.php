@@ -40,6 +40,11 @@ if ($ADMIN->fulltree) {
         try {
             $service = new mod_zoom_webservice();
             $service->get_user($USER->email);
+            $zoomuser = $service->get_user($USER->email);
+            $auth_options = $service->_get_user_meeting_authentication_option($zoomuser->id)->authentication_options;
+            foreach ($auth_options as $auth_option) {
+                $options[$auth_option->id] = $auth_option->name;
+            }
         } catch (moodle_exception $error) {
             $notifyclass = 'notifyproblem';
             $status = 'connectionfailed';
@@ -124,6 +129,10 @@ if ($ADMIN->fulltree) {
     '', 0, 1, 0);
     $settings->add($defaultmeetingauthentication);
 
+	$defaultauthenticationoption = new admin_setting_configselect('mod_zoom/defaultauthenticationoption', get_string('option_authentication_option', 'zoom'),
+    '', null, $options);
+    $settings->add($defaultauthenticationoption);
+	
     $autorecordingchoices = array(ZOOM_AUTO_RECORDING_LOCAL => get_string('auto_recording_local', 'zoom'),
                                 ZOOM_AUTO_RECORDING_CLOUD => get_string('auto_recording_cloud', 'zoom'),
                                 ZOOM_AUTO_RECORDING_NONE => get_string('auto_recording_none', 'zoom'));
