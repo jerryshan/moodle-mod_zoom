@@ -107,7 +107,7 @@ class mod_zoom_external extends external_api {
             $result['meetingauthentication'] = $zoom->option_meeting_authentication;
             $result['authenticationoption'] = $zoom->option_authentication_option;
 
-            if($zoom->editauthdomains == false){
+            if($zoom->editauthdomains == true){
                 $result['authenticationdomains'] = $zoom->authentication_domains;
             }else{
                 $result['authenticationdomains'] = "";
