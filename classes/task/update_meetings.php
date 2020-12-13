@@ -93,6 +93,12 @@ class update_meetings extends \core\task\scheduled_task {
             if ($gotinfo) {
                 $changed = false;
                 $newzoom = populate_zoom_from_response($zoom, $response);
+
+                // temp hack by UC
+                if ($zoom->authentication_domains == null) {
+                    $newzoom->authentication_domains = null;
+                }
+
                 foreach ((array) $zoom as $field => $value) {
                     // The start_url has a parameter that always changes, so it doesn't really count as a change.
                     if ($field != 'start_url' && $newzoom->$field != $value) {
